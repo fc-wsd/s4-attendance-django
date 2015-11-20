@@ -26,6 +26,13 @@ class Course(models.Model):
 			,attendance_datetime__gt = datetime \
 			,attendance_datetime__lt = (datetime + timedelta(days=1)) )
 
+	def get_late_students_by_date(self, datetime):
+
+		start_datetime = datetime.replace(hour=self.start_time_hour)
+
+		return self.get_attendance_students_by_date(datetime) \
+			.filter(attendance_datetime__gt = start_datetime)
+
 	def __str__(self):
 		return '<Course name:'+self.name +'>'
 
